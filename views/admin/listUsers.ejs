@@ -1,0 +1,153 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid">
+    <div class="card w-100 h-100 position-relative overflow-hidden">
+      <div class="card-title fw-semibold m-3 row" style="height: 40px;;">
+        <form class="form-inline" style="display: flex;">
+          <input id="search" name="search" class="form-control" style="width: 50vh;" type="search"
+            placeholder="Search" aria-label="Search">
+          <button type="submit" class="btn btn-outline-success mx-3">Search</button>
+        </form>
+      </div>
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Verified</th>
+                <th scope="col">Orders</th>
+                <th scope="col">Block/UnBlock</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof userData!='undefined' ){%>
+                <%for(let i=0;i<userData.length;i++){%>
+                  <tr>
+                    <td>
+                      <%=i+1%>
+                    </td>
+                    <td>
+                      <%=userData[i].username%>
+                    </td>
+                    <td>
+                      <%=userData[i].email%>
+                    </td>
+                    <td>
+                      <%=userData[i].phone%>
+                    </td>
+                    <td>
+                      <%=userData[i].is_verified%>
+                    </td>
+                    <td>
+                      <button onclick="location='/admin/orders?user=<%=userData[i].username%>'"
+                        class="btn btn-outline-primary" style="max-height: 55px;max-width: 90px;" >Orders</button>
+                    </td>
+                    <td>
+                      <%if(userData[i].is_blocked){%>
+                        <button onclick="unblock('<%=userData[i]._id%>')"
+                          class="btn btn-outline-success">Unblock</button>
+                        <%} else {%>
+                          <button onclick="block('<%=userData[i]._id%>')" class="btn btn-outline-danger">Bock</button>
+                          <%}%>
+                    </td>
+                    <td>
+                      <button onclick="location='editUser?id=<%=userData[i]._id%>'"
+                        class="btn btn-outline-primary">Edit</button>
+                      <button onclick="deleteUser('<%=userData[i]._id%>')"
+                        class="btn btn-outline-danger">Delete</button>
+                    </td>
+                  </tr>
+                  <%}}else{%>
+                    No users found!
+                    <%}%>
+
+            </tbody>
+          </table>
+          <br class="fixed">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function block(id) {
+      Swal.fire({
+      title: 'Do you want to block user ?',
+      confirmButtonText: "Yes",
+      showDenyButton: true,
+      icon: "question",
+      denyButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+      $.ajax({
+        url: '/admin/block',
+        method: 'post',
+        data: {
+          id: id
+        },
+        success: (reponse) => {
+          if (reponse.success) {
+            location.reload()
+          }
+        }
+      })
+    }
+  })}
+    function unblock(id) {
+      $.ajax({
+        url: '/admin/unblock',
+        method: 'post',
+        data: {
+          id: id
+        },
+        success: (reponse) => {
+          if (reponse.success) {
+            location.reload()
+          }
+        }
+      })
+    }
+    function deleteUser(id) {
+    Swal.fire({
+      title: 'Do you want to delete user ?',
+      confirmButtonText: "Yes",
+      showDenyButton: true,
+      icon: "question",
+      denyButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          $.ajax({
+            url: '/admin/deleteUser',
+            method: 'post',
+            data: {
+              id: id
+            },
+            success: (reponse) => {
+              if (reponse.success) {
+                location.reload()
+              }
+            }
+          })
+        }
+      })
+    }
+  </script>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>

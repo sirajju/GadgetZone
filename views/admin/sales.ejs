@@ -1,0 +1,49 @@
+
+
+<div class="container">
+    
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Address</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Order status</th>
+        </tr>
+            <%for(let i=0;i<orderData.length;i++){%>
+        <tr>
+    
+                <td><%=orderData[i].date.toISOString().substring(0,10)%></td>
+                <td><%=orderData[i].userName%></td>
+                <td><%=orderData[i].address[0].name%>,<%=orderData[i].address[0].address%>,<%=orderData[i].address[0].city%></td>
+                <td><%=orderData[i].totalAmount%></td>
+                <td><%=orderData[i].paymentMethod%></td>
+                <td><%=orderData[i].orderStatus%></td>
+        </tr>
+    
+                <%}%>
+    </table>
+</div>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+    .table {
+        margin-top: 10vh;
+        width:80%;
+        border:4px solid rgb(90, 89, 89)
+    }
+    .table tr{
+       height: 60px;
+    }
+    td {
+       padding: 30px;
+       border: 2px solid rgb(90, 89, 89);;
+    }
+    th{
+        background: rgb(90, 89, 89);
+        color: white;
+    }
+</style>

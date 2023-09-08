@@ -1,0 +1,66 @@
+<%- include('header.ejs') %>
+<% async: true %>
+<title>
+  <% if(typeof title !='undefined'){ %>
+    <%=title%>
+    <%}
+    else{%>
+      HomePage
+      <%}%>
+    
+</title>
+<link rel="stylesheet" href="assets/css/css_login.css">
+<body>
+ 
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form action="verifyOtp" id="form-login" method="post">
+        <div class="form-group"
+          <label for="email">Enter otp</label>
+          <input type="text" id="email" name="otp" required>
+          <font size="2" class="error" style="font-weight: bold;color: red;">
+          <%if(typeof message!='undefined'){ %>
+            <%=message%>
+            <%}%>
+          </font>
+        </div>
+        
+        <button onclick="submit()"class="btn btn-login">Login</button>
+      </form>
+      <hr>
+      <font size="2" style="font-weight: bold; margin-left: 35%;"><a href="/">Login here</a></font>
+
+    </div>
+  </div>
+  <script>
+    function showPass(){
+      const password = document.getElementById('password')
+      password.type = password.type=='text'?'password':'text'
+    }
+    function submit(){
+      let username = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let form = document.getElementById('form-login')
+      let error = document.querySelector('.error');
+      if(username==''&&password==''){
+        error.innerHTML = 'Please fill it'
+      }
+      else{
+        if(username==''){
+        error.innerHTML = 'Please enter email'
+      }
+      if(password==''){
+        error.innerHTML = 'Please enter password'
+      }
+      else{
+        if(username!=''&&password!=''){
+        form.submit()
+      }
+      }
+      }
+    }
+  </script>
+</body>
+<%- include('footer.ejs') %>
+</html>

@@ -1,0 +1,96 @@
+<%- include('header.ejs') %>
+  <section id="team" class="team section-bg" style="margin-top: 100px;">
+    <% 
+    if(typeof productData !=='undefined'){
+    if(productData.length){ %>
+      <div class="container">
+        <div class="row">
+          <form method="post" class="form" style="display: flex;margin-left: 0vh;">
+            <%if(typeof search!='undefined'&&Object.keys(search).length){%>
+              <input  id="input" type="search" value="<%=search%>" name="name" placeholder="Search product or item" class="form-control"
+              style="width:20vh;text-transform:capitalize;">
+              <%}else{%>
+                <input  id="input" type="search" name="name" placeholder="Search product or item" class="form-control"
+                style="width:20vh;text-transform:capitalize;">
+                <%}%>
+            <button class="btn btn-outline-primary mx-3">Search</button>
+            <span class="my-2 cat d-none">Cetegory :</span> 
+            <select onchange="location='/shop?'+value" class="btn mx-2" id="">
+              <option selected>Category</option>
+              <option value="">All</option>
+              <%for(let i=0;i<categoryData.length;i++){%>
+                <option value="search=<%=categoryData[i].name%>"><%=categoryData[i].name%></option>
+                  <%}%>
+            </select>
+            <select onchange="location+=`&&price=${value}`" class="btn mx-2" id="">
+              <option selected class="active">Price</option>
+              <option value="All">All</option>
+                <option value="0tok">upto 1000</option>
+                <option value="kto5k">₹1000 - ₹5000</option>
+                <option value="5kto10k">₹5000 - ₹1000 </option>
+                <option value="from10k">greater ₹10000</option>
+            </select>
+          </form>
+          <%productData.forEach((product)=>{%>
+            <div class="col-lg-3  col-md-6  align-items-stretch mt-5">
+              <div class="member" style="height: 90%;border-top:4px solid rgb(58, 166, 224);" data-aos="fade-up"
+                data-aos-delay="100">
+                <a style="cursor: pointer;" href="showProduct?id=<%=product._id%>">
+                  <div class="member-img mt-4">
+                    <img src="assets/productImages/<%=product.image[0]%>" style="height: 120px;" class="img-fluid mt-3 "
+                      alt="">
+                    <div class="social">
+                      <a href="showProduct?id=<%=product._id%>"><i class="bi bi-eye"></i></a>
+                </a>
+                <a href=""><i class="bi bi-share"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>
+                <%=product.name%>
+              </h4>
+              <h3>₹<%=product.price%>
+              </h3>
+              <span>
+                <%=product.description%>
+              </span>
+            </div>
+        </div>
+      </div></a>
+      <%})}%>
+      <div class="row" style="display: flex;">
+        <%if(productData.length==8||curr!=1){%>
+          <center><%if(curr!=1){%>
+            <a href="javascript:window.history.back()"><button class="btn btn-outline-success col-lg-2 col-md-2">Previous page</button></a>
+            <%}%>
+                      <%if(curr!=totalPage&&productData.length==8){%>
+                        <a href="/shop?page=<%=curr+1%>"><button class="btn btn-outline-primary col-lg-2 col-md-2">Next page</button></a></center>
+                        <%}%>
+<%}%>
+        </div>
+        <%} if(productData.length==0){%>
+         
+            <center>
+              <h1 style="margin-bottom: 60vh;">No product found</h1>
+  
+              <button onclick="location.href='/shop'" class="btn btn-outline-primary mx-3">Go back</button>
+            </center>
+          <%}%>
+            </div>
+            </div>
+            </div>
+            <script>
+            </script>
+            <style>
+              @media (min-width:500px) and (max-width:4000px){
+                .form {
+                  margin-left: 30vh;
+                }
+                .input {
+                   width:50vh
+                }
+              }
+            </style>
+  </section><!-- End Team Section -->
+
+  <%- include('footer.ejs') %>

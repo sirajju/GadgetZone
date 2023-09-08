@@ -1,0 +1,222 @@
+<%-include('header.ejs')%>
+
+  <body onselectstart="return false" style="overflow-y: hidden;">
+    </style>
+    <style>
+      table th {
+        margin-left: 50px;
+      }
+
+      table tr {
+        appearance: none;
+      }
+
+      .scope {
+        font-size: 18px;
+      }
+    </style>
+
+    <section class="testimonials bar bg-light" style="height:70vh;;margin-top: 15vh;">
+      <div class="row main" data-aos="fade-up" data-aos-delay="100">
+        <%for(let i=0;i<orderData.length;i++){%>
+          <div class="elem col-md-7 col-sm-11 col-11 col-lg-4">
+            <center>
+              <h1>Order #<%=i+1%>
+              </h1>
+            </center>
+            <hr>
+            <ul>
+              <li>Date : <span>
+                  <%=dates[i]%>
+                </span></li>
+              <li>Address : <span><a href="/viewAddress?name=<%=orderData[i].address[0].category%>">
+                    <%=orderData[i].address[0].category%>
+                  </a></span></li>
+              <li>Total : <span>
+                  ₹<%=orderData[i].totalAmount%>
+                </span></li>
+              <li>Payment status : <%if(orderData[i].paymentStatus=='pending'){%><span style="color: red;">
+                    <%=orderData[i].paymentStatus%>
+                  </span>
+                  <%}else{%><span style="color:green">
+                      <%=orderData[i].paymentStatus%></a>
+                    </span>
+                    <%}%>
+              </li>
+              <li>Status : <span>
+                  <%if(orderData[i].orderStatus=='cancelled'){%><span style="color:red">
+                      <%=orderData[i].orderStatus%>
+                    </span>
+                    <%}else{%>
+                      <%=orderData[i].orderStatus%>
+                        <%}%>
+                </span> </li>
+              <li>Arriving : <span style="color:green">
+                  <%if(orderData[i].orderStatus=='pending'){%><span style="color:red">Payment not confirmed<%}else
+                        if(orderData[i].orderStatus=='cancelled' ){%> <span style="color: red;">Order cancelled by
+                          user</span> </span>
+                    <%}else if(orderData[i].arrive=='Arrived' ){%>This product have been recieved<%}else{%>This product
+                        arrives at <%=new Date(orderData[i].arrive).getDate()%>
+                          <%}%>
+                </span> </li>
+              <li style="margin-top: 25px;">
+                <center>
+                    <%if(orderData[i].arrive=='Arrived' ){%>
+                      <button style="width: 150px;" onclick="returnItem()" class="btn btn-outline-danger">Return item</button>
+                      <button style="width: 150px;margin: 10px;" onclick="feedback()" class="btn btn-outline-primary">Feedback</button>
+
+                      <%}else if(orderData[i].orderStatus=='placed'){%>
+                        <button onclick="cancel('<%=orderData[i]._id%>')" style="width: 150px;"
+                          class="btn btn-outline-danger">Cancell</button>
+                        <button onclick="location='viewProducts?id=<%=orderData[i]._id%>'"
+                          style="width: 150px;margin: 10px;" class="btn btn-outline-primary">Show products</button>
+                        <%}else{%>
+                          <h3>This order has been cancelled</h3>
+                          <%}%>
+              </li>
+            </ul>
+          </div>
+          <%}%>
+      </div>
+      </div>
+      <br>
+      <%if(orderData.length==0){ %>
+        <center>
+          <h1 style="margin-top: 25vh;">No orders found</h1>
+
+          <button onclick="location.href='/shop'" class="btn btn-outline-success mt-5">Shop now</button>
+        </center>
+        <%}%>
+          </div>
+    </section>
+    <script>
+      function returnItem(){
+        Swal.fire({
+          title: "Do you want to return the item ? ",
+          input: "text",
+          inputLabel: "Enter the reason to return",
+          inputValidator: (value) => {
+            if (!value) {
+              return 'You need to write the reason!'
+            }
+          },
+          inputPlaceholder: "Enter here",
+          showDenyButton: true,
+          denyButtonText: "No",
+          icon: "question",
+          confirmButtonText: "Yes"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              html:"<h3 font-size='22'>Your request has been submited and please check your inbox.</h3>",
+              icon:"success"
+            })
+          }
+        })
+      }
+      function feedback(){
+        Swal.fire({
+          title: "Thank you for your Feedback",
+          input: "text",
+          inputLabel: "Enter the Feedback",
+          inputValidator: (value) => {
+            if (!value) {
+              return 'You need to write the Feedback!'
+            }
+          },
+          inputPlaceholder: "Enter here",
+          showDenyButton: true,
+          denyButtonText: "No",
+          icon: "question",
+          confirmButtonText: "Yes"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              html:"<h3 font-size='22'>Your Feedback has been submited and Thank you :/</h3>",
+              icon:"success"
+            })
+          }
+        })
+      }
+      function cancel(id) {
+        Swal.fire({
+          title: "Do you want to cancel order ? ",
+          input: "text",
+          inputLabel: "Enter the reason to cancel",
+          inputValidator: (value) => {
+            if (!value) {
+              return 'You need to write the reason!'
+            }
+          },
+          inputPlaceholder: "Enter here",
+          showDenyButton: true,
+          denyButtonText: "No",
+          icon: "question",
+          confirmButtonText: "Yes"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location = 'cancelOrder?id=' + id
+          }
+        })
+      }
+    </script>
+    <style>
+      li {
+        font-weight: bold;
+        font-size: 23px;
+        list-style: none;
+        margin-top: 5px;
+      }
+
+      section {
+        overflow-y: scroll;
+      }
+
+      .form {
+        display: flex;
+        margin-left: 70vh;
+        position: fixed;
+      }
+
+      .main {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      ul {
+        margin-top: 30px;
+      }
+
+      .elem {
+        height: 52vh;
+        background-color: white;
+        margin: 50px;
+        border-radius: 10px;
+        border: 2px solid rgb(255, 255, 255);
+        box-shadow: 2px 2px 10px 2px rgb(212, 209, 209) inset;
+        border-top: 5px solid rgb(58, 166, 224);
+      }
+
+      span {
+        font-weight: normal;
+      }
+
+      @media (min-width:0px) and (max-width:500px) {
+        .form {
+          margin-left: 50px;
+          width: 50px;
+        }
+
+        .elem {
+          height: 50vh;
+        }
+
+        button {
+          margin: 0;
+        }
+      }
+    </style>
+
+    <%-include('footer.ejs')%>

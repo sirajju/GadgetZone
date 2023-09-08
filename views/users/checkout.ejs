@@ -1,0 +1,347 @@
+<%-include('header.ejs')%>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <div class="box">
+        <div class="details" data-aos="fade-up" data-aos-delay="10">
+            <br>
+            <font>Details</font>
+            <div class="content">
+                <span class="fw-bolder">Name</span> : <%=userData.username%>
+                    <br>
+                    <span class="fw-bolder">Email</span> : <%=userData.email%>
+                        <br>
+                        <span class="fw-bolder">Wallet</span> : ₹<%=userData.wallet%>
+
+            </div>
+        </div>
+        <div class="details" data-aos="fade-up" data-aos-delay="10">
+            <br>
+            <font>Coupon</font>
+            <div class="content">
+                <%if(couponData.length){%>
+                    <span class="fw-bolder">Applied</span> : <code><%=couponData[0].name%></code>
+                    <br>
+                    <span class="fw-bolder">Discount</span> : <code
+                        class="text-success"><input value="<%=couponData[0].name%>" type="hidden" id="coupon"><%=couponData[0].amount%>%</code>
+                    <br>
+                    <center>
+                        <button onclick="location='removeCoupon?id=<%=couponData[0]._id%>'"
+                            class="btn btn-outline-danger mx-2 mt-3" style="height: 40px;width: 100px;">Remove</button>
+                    </center>
+                    </form>
+                    <%}else{%>
+                        <span class="fw-bolder">Applied</span> : <code id="cpn">none</code>
+                        <span class="dropdown">
+                            <button class="btn dropdown-toggle" style="font-size: 25px;" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="ti ti-caret-down-filled"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <%for(let i=0;i<totalCoupons.length;i++){%>
+                                    <li><a class="dropdown-item" onclick="apply('<%=totalCoupons[i].name%>')">apply
+                                            <code style="color:red"><%=totalCoupons[i].name%></code> to get <code
+                                                style="color:green"><%=totalCoupons[i].amount%>%</code> offer</a></li>
+                                    <%}%>
+                            </ul>
+                        </span>
+                        <br>
+                        <span class="fw-bolder">Discount</span> : <span class="discount">0</span>
+                        <br>
+                        <div method="post" class="coupon d-flex">
+                            <input class="form-control mt-3 w-50" type="text" id="coupon">
+                            <a onclick="apply()" class="btn btn-outline-primary mx-2 mt-3"
+                                style="height: 35px;width: 100px;">Apply</a>
+
+                        </div>
+
+
+                        <%}%>
+            </div>
+            <form id="checkout-form" action="/fg" method="post">
+        </div>
+
+        <div class="details" data-aos="fade-up" data-aos-delay="10">
+            <br>
+            <font>Total</font>
+            <div class="content">
+                <span class="fw-bolder">Subtotal</span> : <input type="hidden" value="<%=totalAmount+discountPrice%>"
+                    id="amount">
+                <%=totalAmount+discountPrice%></span>
+                    <br>
+                    <%if(couponData.length){%>
+                        <span class="fw-bolder">Discount</span> : <input type="hidden" value="<%=discountPrice%>"
+                            id="discount">
+                        <%=discountPrice%></span>
+                            <%}else{%>
+                                <span class="fw-bolder">Discount</span> : <input type="hidden" value="0"
+                                    id="discount">0</span>
+
+                                <%}%>
+                                    <hr>
+                                    <span class="fw-bolder">Total</span> : ₹<%if(totalAmount==0){%>
+                                        <%=1%>
+                                            <%}else{%>
+                                                <%=totalAmount%>
+                                                    <%}%>
+                                                        <input id="total" type="hidden"
+                                                            value="<%if(totalAmount==0){%><%=1%><%}else{%><%=totalAmount%><%}%>"
+                                                            name="totalAmount">
+            </div>
+        </div>
+        <div style="overflow-y: scroll;" class="details" data-aos="fade-up" data-aos-delay="10">
+            <br>
+            <font>Address</font>
+            <div class="content"
+                style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                <%if(addressData.length){%>
+                    <%for(let i=0;i<addressData.length;i++){%>
+                        <span class="mx-2">
+                            <input value="<%=addressData[i].category%> " type="radio" checked name="address">
+                            <a href="editAddress?name=<%=addressData[i].category%>"><span id="address-hov"
+                                    data-placement="top" title="Click to view address">
+                                    <%=addressData[i].category%>
+                                </span></a><button type="button" onclick="deleteAddres('<%=addressData[i].category%>')"
+                                class="mx-3 btn btn-outline-danger">Delete</button>
+                        </span><br>
+                        <%}}%>
+                            <button type="button" onclick="location='/addAddress'" style="width:30vh;height:50px"
+                                class="mt-2 btn btn-outline-primary">Add address</button>
+                            <!-- <center> <span onclick="location='/addAddress'" style="width:300px;height:50px;color:red">You can't more address</span></center> -->
+            </div>
+        </div>
+        <div class="details" data-aos="fade-up" data-aos-delay="10">
+            <br>
+            <font>Payment</font>
+            <div class="content">
+                <input type="radio" value="COD" style="padding:10px;margin-top: 20px;" name="paymentType"><span
+                    class="mx-2"> Cash on delivery</span><br>
+                <input checked type="radio" value="ONLINE" style="padding:10px;margin-top: 20px;"
+                    name="paymentType"><span class="mx-2"> Net banking</span><br>
+                <input type="radio" value="WALLET" style="padding:10px;margin-top: 20px;" name="paymentType"><span
+                    class="mx-2"> Wallet</span><br>
+            </div>
+        </div>
+        <div class="row col-md-12 col-lg-12" style="display: flex;justify-content: center;align-items: center;">
+            <button id="btn-pay" type="button" class="btn btn-outline-success"
+                style="width:30vh;height:60px;margin-top: 10vh;margin-bottom: 10vh;"><big>Proceed to
+                    order</big></button>
+
+        </div>
+    </div>
+    </form>
+    </body>
+
+    <script>
+
+        window.onblur = function (event) {
+
+            document.title = 'Warning!!'
+            Swal.fire({
+                title: "Your order not proceeded and window has been locked",
+                icon: "warning",
+                showConfirmButton: false
+            })
+            document.querySelector('.box').style.opacity = '0.3'
+        }
+        window.onfocus = function (event) {
+            Swal.clickConfirm()
+            document.querySelector('.box').style.opacity = '100'
+
+            document.title = 'Checkout now'
+
+        }
+        function deleteAddres(id) {
+            Swal.fire({
+                title: "Do you want to delete Address ?",
+                icon: "question",
+                showDenyButton: true,
+                denyButtonText: 'No',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location = 'deleteAddress?name=' + id
+                }
+            })
+        }
+        let btn = document.getElementById('btn-pay');
+        function apply(value) {
+            let coupon
+            if (value) {
+                coupon = value
+            } else {
+                coupon = document.getElementById('coupon').value
+            }
+            let cpn = document.getElementById('cpn')
+            $.ajax({
+                url: '/checkout',
+                method: 'post',
+                data: {
+                    name: coupon,
+                },
+                success: (response) => {
+                    if (response.isExists) {
+                        location.reload()
+                    }
+                    else if(response.limit){
+                        cpn.innerText = 'Limit exceeded'
+                    }
+                    else if (response.isUsed) {
+                        cpn.innerText = 'Coupon already used'
+                    }
+                    else {
+                        cpn.innerText = 'Coupon not found!'
+                    }
+                }
+            })
+        }
+        btn.addEventListener('click', (e) => {
+            let coupon = document.getElementById('coupon').value
+            const amount = document.getElementById("amount").value
+            const total = document.getElementById("total").value;
+            const discount = document.getElementById("discount").value
+            let address = $("input[name=address]:checked").val();
+            let payment = $("input[name=paymentType]:checked").val();
+            if (!address) {
+                alert('Add delivery address first')
+                return null
+            }
+            Swal.showLoading()
+            e.preventDefault();
+            $.ajax({
+                url: "/placeOrder",
+                method: "post",
+                data: {
+                    amount: amount,
+                    total: total,
+                    discount: discount,
+                    address: address.trim(),
+                    payment: payment,
+                    coupon: coupon
+                },
+                success: (response) => {
+                    if (response.cod == true || response.wallet) {
+                        location.href = "/orderSuccess";
+                    } else if (response.walletError) {
+                        alert('Insufficent balance in wallet')
+                    }
+                    else {
+                        razorpayPayment(response.order);
+                    }
+                }
+            })
+        })
+        async function razorpayPayment(order) {
+            var options = {
+                "key": "rzp_test_TjaRzg9ObZY8lv", // Enter the Key ID generated from the Dashboard
+                "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "GadgetZone pvt ltd", //your business name
+                "description": "Test Transaction",
+                //   "image": "https://example.com/your_logo",
+                "order_id": order.orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": async (response) => {
+                    verifyPayment(response, order)
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar", //your customer's name
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "97593980565"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3AA6E0"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            await rzp1.open();
+        }
+        function verifyPayment(payment, order) {
+            let total = document.getElementById('total').value
+            $.ajax({
+                url: "/verifyPayment",
+                method: "post",
+                data: {
+                    payment: payment,
+                    order: order,
+                    total
+                },
+                success: (response) => {
+                    if (response.success) {
+                        location.href = '/orderSuccess';
+                    } else {
+                        alert('payment failed');
+                    }
+                }
+            })
+        }
+    </script>
+    <style>
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            margin-top: 20vh;
+            width: 100%;
+            height: 80vh;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .details {
+            box-sizing: border-box;
+            width: 60vh;
+            height: 250px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 30px 1px rgb(234, 234, 234);
+            border: 2px solid rgb(245, 235, 235);
+        }
+
+        font {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 29px;
+            font-weight: bolder;
+        }
+
+        .content {
+            margin: 50px;
+            margin-top: 25px;
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @media (min-width:0px) and (max-width:500px) {
+            .box {
+                display: flex;
+                flex-direction: row;
+                height: auto;
+
+            }
+
+            .details {
+                width: 100vh;
+            }
+        }
+    </style>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>

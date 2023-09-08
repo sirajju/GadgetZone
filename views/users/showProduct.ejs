@@ -1,0 +1,444 @@
+<%- include('header.ejs')%>
+
+    <body>
+        <style>
+
+        </style>
+        <section class="ftco-section mt-5">
+            <div class="container img-bg">
+                <div class="row">
+                    <div class="col-md-5 col-12 col-sm-12" style="display: flex">
+                        
+                        <img id="imgbig" src="/assets/productImages/<%=product.image[0]%>"
+                            style="width:80vh;height:auto;" class="img-fluid ">
+                    </div>
+                    <div class="col-lg-6 product-details pl-md-5 ftco-animate" >
+                        <center>
+                            <h2 class="mt-3"><b>
+                                    <%=product.name%>
+                                </b></h2>
+                            <div>
+
+                                <p class=" mr-4">
+                                    <a href="#" class="">5.0 <span style="color: #bbb;">&nbsp;Rating</span></a>
+                                </p>
+                            </div>
+                            <h3><span>₹<%=product.price%></span></h3>
+                            <font color="green">
+                                <%=product.discount%>% Discount
+                            </font>
+                            <p style="font-size:20px">
+                                <%=product.description%>
+                            </p>
+                            <%if(product.isActive&&product.stock>0){%>
+                                <div class="row mt-4">
+
+                                    <p style="color: #000;">
+                                        <font color="red">
+                                            <%=product.stock%> piece available
+                                        </font>
+                                    </p>
+                                    <div class="w-100"></div>
+                                    <div class="">
+                                        </span>
+                                        <input type="button" onclick="addToCart('<%=product._id%>','dec')"
+                                            class="bi-plus btn" value="-"
+                                            style="border:1px solid black;border-radius:100px;">
+                                        <span class="mx-2 my-2">Quantity : <b class="quantity">
+                                                <%if(typeof quantity !='undefined' ){%>
+                                                    <%=quantity%>
+                                                        <%}else{%>
+                                                            1<%}%>
+                                            </b></span>
+                                        <span class="input-group-btn mx-2">
+                                           <%if(product.stock>quantity){%>
+                                            <input type="button" class="bi-plus btn"
+                                                onclick="addToCart('<%=product._id%>','inc')" value="+"
+                                                style="border:1px solid black;border-radius:100px;" data-type="plus"
+                                                data-field="">
+                                           <%}%>
+
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <% if(typeof isExists !=='undefined' ){ if(isExists){ %>
+                                        <font class="text-danger mt-3">You already have this item in your cart</font>
+                                        </p>
+                                        <%}}%>
+                                            <div style="margin-top: 30px;display: flex;justify-content: center;align-items: center;">
+                                                <%if(!isExists){%>
+                                                    <div class="">
+                                                        <button onclick="addToCart('<%=product._id%>','inc')"
+                                                            class="btn btn-outline-primary py-3"
+                                                            style="width: 200px;">Add to cart</button>
+                                                    </div>
+                                                    <%}else{%>
+                                                        <div class="">
+                                                            <button style="width: 200px;"
+                                                                class="btn btn-outline-success py-3 px-5 "
+                                                                onclick="location='/cart'">Explore cart</button>
+                                                        </div>
+                                                        <%}%>
+                                                            <button class="btn-wish"
+                                                                onclick="addToWishlist('<%=product._id%>')">
+                                                                <%if(isWished){%>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="icon icon-tabler icon-tabler-heart"
+                                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                                        stroke-width="2" stroke="red" fill="red"
+                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none"></path>
+                                                                        <path
+                                                                            d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
+                                                                        </path>
+                                                                    </svg>
+                                                                    <%}else{%>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon icon-tabler icon-tabler-heart"
+                                                                            width="24" height="24" viewBox="0 0 24 24"
+                                                                            stroke-width="2" stroke="currentColor"
+                                                                            fill="none" stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none"></path>
+                                                                            <path
+                                                                                d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
+                                                                            </path>
+                                                                        </svg>
+                                                                        <%}%>
+                                                            </button>
+                                            </div>
+                        </center>
+                        <%}else if(product.stock<=0&&product.isActive){%>
+                            <h3 style="color:Red;margin-top: 150px;">Product out of stock</h3>
+                            <%}else{%>
+                                <h3 style="color:Red;margin-top: 150px;">Product temporarly not available</h3>
+                                <%}%>
+                    </div>
+                    </center>
+                    <div class="container">
+                        <div class="row ">
+                            <div class="col-md-6 ">
+                               <%for(let i=0;i<product.image.length;i++){%>
+                                <img class="img-small" onclick="change('<%=product.image[i]%>')" src="assets/productImages/<%=product.image[i]%>" alt="">
+                                <%}%>
+                            </div>
+                            <div class="col-md-6">
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <center>
+                <div class="row col-md-10" style="margin-top: 120px;">
+                    <div class="col-md-12 nav-link-wrap">
+                        <div class="nav nav-pills d-flex text-center" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                            <a class="nav-link ftco-animate active mr-lg-1" id="v-pills-1-tab" data-toggle="pill"
+                                href="#v-pills-1" role="tab" aria-controls="v-pills-1"
+                                aria-selected="true">Description</a>
+
+                            <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" data-toggle="pill"
+                                href="#v-pills-2" role="tab" aria-controls="v-pills-2"
+                                aria-selected="false">Manufacturer</a>
+
+                            <a class="nav-link ftco-animate" id="v-pills-3-tab" data-toggle="pill" href="#v-pills-3"
+                                role="tab" aria-controls="v-pills-3" aria-selected="false">Reviews</a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 tab-wrap">
+
+                        <div class="tab-content" id="v-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
+                                aria-labelledby="day-1-tab">
+                                <div class="p-4">
+                                    <h3 class="mb-4"><%=product.name%> RN 2019 iD</h3>
+                                    <p>On her way she met a copy. The copy warned the Little Blind Text, that where it
+                                        came from it would have been rewritten a thousand times and everything that was
+                                        left from its origin would be the word "and" and the Little Blind Text should
+                                        turn around and return to its own, safe country. But nothing the copy said could
+                                        convince her and so it didn’t take long until a few insidious Copy Writers
+                                        ambushed her, made her drunk with Longe and Parole and dragged her into their
+                                        agency, where they abused her for their.</p>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="v-pills-2" role="tabpanel"
+                                aria-labelledby="v-pills-day-2-tab">
+                                <div class="p-4">
+                                    <h3 class="mb-4">Manufactured By Nike</h3>
+                                    <p>On her way she met a copy. The copy warned the Little Blind Text, that where it
+                                        came from it would have been rewritten a thousand times and everything that was
+                                        left from its origin would be the word "and" and the Little Blind Text should
+                                        turn around and return to its own, safe country. But nothing the copy said could
+                                        convince her and so it didn’t take long until a few insidious Copy Writers
+                                        ambushed her, made her drunk with Longe and Parole and dragged her into their
+                                        agency, where they abused her for their.</p>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-3" role="tabpanel"
+                                aria-labelledby="v-pills-day-3-tab">
+                                <div class="row p-4">
+                                    <div class="col-md-7">
+                                        <h3 class="mb-4">23 Reviews</h3>
+                                        <div class="review">
+                                            <div class="user-img" style="background-image: url(images/person_1.jpg)">
+                                            </div>
+                                            <div class="desc">
+                                                <h4>
+                                                    <span class="text-left">Jacob Webb</span>
+                                                    <span class="text-right">14 March 2018</span>
+                                                </h4>
+                                                <p class="star">
+                                                    <span>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                    </span>
+                                                    <span class="text-right"><a href="#" class="reply"><i
+                                                                class="icon-reply"></i></a></span>
+                                                </p>
+                                                <p>When she reached the first hills of the Italic Mountains, she had a
+                                                    last view back on the skyline of her hometown Bookmarksgrov</p>
+                                            </div>
+                                        </div>
+                                        <div class="review">
+                                            <div class="user-img" style="background-image: url(images/person_2.jpg)">
+                                            </div>
+                                            <div class="desc">
+                                                <h4>
+                                                    <span class="text-left">Jacob Webb</span>
+                                                    <span class="text-right">14 March 2018</span>
+                                                </h4>
+                                                <p class="star">
+                                                    <span>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                    </span>
+                                                    <span class="text-right"><a href="#" class="reply"><i
+                                                                class="icon-reply"></i></a></span>
+                                                </p>
+                                                <p>When she reached the first hills of the Italic Mountains, she had a
+                                                    last view back on the skyline of her hometown Bookmarksgrov</p>
+                                            </div>
+                                        </div>
+                                        <div class="review">
+                                            <div class="user-img"
+                                                style="background-image: url('/assets/images/profile/user-1.jpg')">
+                                            </div>
+                                            <div class="desc">
+                                                <h4>
+                                                    <span class="text-left">Jacob Webb</span>
+                                                    <span class="text-right">14 March 2018</span>
+                                                </h4>
+                                                <p class="star">
+                                                    <span>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                        <i class="ion-ios-star-outline"></i>
+                                                    </span>
+                                                    <span class="text-right"><a href="#" class="reply"><i
+                                                                class="icon-reply"></i></a></span>
+                                                </p>
+                                                <p>When she reached the first hills of the Italic Mountains, she had a
+                                                    last view back on the skyline of her hometown Bookmarksgrov</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                </script>
+                <style>
+                    .img-small {
+                        width: 100px;
+                        margin: 10px;
+                        cursor: pointer;
+                    }
+                    #imgbig {
+                        transition: 0.5s;
+                        border-radius: 20px;
+                    }
+
+                    #imgbig:hover {
+                        transition: 0.5s;
+                        transform: scale(1.2);
+                        cursor: zoom-in;
+                    }
+                    .img {
+                        width: 300px !important;
+                        height: auto;
+                        margin-left: 15vh;
+                    }
+                    .product-details {
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 5px grey;
+                        padding: 30px;
+                        height: 600px;
+                        margin-left: 100px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .btn {
+                        transition: 0.6s;
+                    }
+                    button:hover {
+                        transition: 0.6s;
+                        transform: scale(1.1);
+                    }
+                    .btn-wish {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 20px;
+                        border: none;
+                        margin-left: 10px;
+                    } 
+
+                    @media (min-width:1px) and (max-width:768px) {
+                        .product-details {
+                            padding: 50px;
+                            height: 600px;
+                            width: 420px;
+                            margin: 0;
+                            margin-top: 40px;
+                        }
+                        /* .btnAddCart {
+                            margin-left: 5vh;
+                        }
+                        .btn-wish {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 20px;
+                            border:none;
+                            position: absolute;
+                            margin-left: 28vh;
+                        } */
+                    }
+
+                    @media (min-width:769px)and (max-width:1000px) {
+                        .product-details{
+                            margin-left: 10vh;
+                            width:60vh;
+                        }
+                        /* .btnAddCart{
+                            margin-left:13vh
+                        }
+                        .btn-wish{
+                            margin-left: 35vh;
+                        } */
+                        #imgbig{
+                            display: none;
+                        }
+                    }
+                </style>
+                <script>
+                    function change(path){
+                        const big = document.getElementById('imgbig');
+                        console.log(path);
+                        big.src = 'assets/productImages/'+path
+                    }
+                    function addToCart(id, action) {
+                        const div = document.querySelector('.quantity')
+                        $.ajax({
+                            url: 'addToCart',
+                            method: 'post',
+                            data: {
+                                id: id,
+                                action: action
+                            },
+                            success: (response) => {
+                                if (response.success) {
+                                    Swal.fire({
+                                        title: '<b>Item added to cart',
+                                        timer: 1000,
+                                        showConfirmButton: false,
+                                        icon: "success"
+                                    })
+                                }
+                                else if (response.delete) {
+                                    Swal.fire({
+                                        title: 'Item deleted from cart',
+                                        icon: "error",
+                                        showConfirmButton: false,
+                                    })
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: " item total count : " + response.n.Quantity,
+                                        timer: 1000,
+                                        icon: "warning",
+                                        showConfirmButton: false,
+                                    })
+                                }
+                                setTimeout(() => {
+                                    location.reload()
+                                }, 1000)
+                            }
+                        })
+                    }
+                    function getConfirmation(){
+                        Swal.fire({
+                                title:"Do you want to remove item from cart ?",
+                                showDenyButton:true,
+                                denyButtonText:"No",
+                                confirmButtonText:"Yes",
+                                icon:"question"
+
+                            }).then((response)=>{
+                                if(response.isConfirmed){
+                                    return true
+                                }else{
+                                    return false
+                                }
+                            })
+                    }
+                    function addToWishlist(id) {
+                        $.ajax({
+                            url: 'addToWishlist',
+                            method: 'post',
+                            data: {
+                                id: id
+                            },
+                            success: (response) => {
+                                if (response.success) {
+                                    Swal.fire({
+                                        title: "Item added to wishlist",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                    })
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Item already in whishlist",
+                                        icon: "error",
+                                        showConfirmButton: false,
+                                    })
+                                }
+                                setTimeout(() => {
+                                    location.reload()
+                                }, 1000)
+                            }
+                        })
+                    }
+                </script>
+                </div>
+        </section>
+
+        <%- include('footer.ejs')%>

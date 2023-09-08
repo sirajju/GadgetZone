@@ -1,0 +1,43 @@
+<%- include('header.ejs')%>
+        <div class="container-fluid d-flex justify-content-center align-items-center">
+          <div class="card col-lg-6">
+                <h5 class="card-title fw-semibold mb-4">Add Product</h5>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                      
+                      <label for="exampleInputEmail1" class="form-label">Product Name</label>
+                      <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <label for="exampleInputPassword1" class="form-label">Price</label>
+                      <input type="text" name="price" class="form-control" id="exampleInputPassword1">
+                      
+                      <label for="exampleInputPassword1" class="form-label mt-3">Category : </label>
+                      <select class="mx-3" name="category">
+                        <%for(let i=0;i<categoryData.length;i++){%>
+                          <option value="<%=categoryData[i].name%>"><%=categoryData[i].name%></option>
+                          <%}%>
+                        </select>
+                        <br>
+                        <label for="exampleInputPassword1" class="form-label mt-3">Description</label>
+                      <input type="text"name="description" class="form-control" id="exampleInputPassword1">
+                      
+                      
+                      <label for="exampleInputPassword1" class="form-label">Stock</label>
+                      <input type="text" name="stock" class="form-control" id="exampleInputPassword1">
+                      <label for="exampleInputPassword1" class="form-label">Image</label>
+                        <input type="file" name="image" multiple class="form-control" id="exampleInputPassword1">
+                      
+                      <label for="exampleInputPassword1" class="form-label">Discount</label>
+                      
+                        <input type="text" name="discount" class="form-control" id="exampleInputPassword1">
+                      </div>
+                    <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

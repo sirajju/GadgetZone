@@ -1,0 +1,126 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid">
+    <div class="card w-100 h-100 position-relative overflow-hidden">
+      <div class="card-title fw-semibold m-3 row" style="height: 40px;;">
+        <button onclick="location='addCoupon'" class="btn btn-outline-success mx-3" style="width: 20vh;">Add
+          new</button>
+      </div>
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name/Code</th>
+                <th scope="col">Discount (%)</th>
+                <th scope="col">Validity</th>
+                <th scope="col">Expire at</th>
+                <th scope="col">Maximum users</th>
+                <th scope="col">Current users (n)</th>
+                <th scope="col">Disabled</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof couponData!='undefined' ){%>
+                <%for(let i=0;i<couponData.length;i++){%>
+
+                  <% let dayNames=["Sun", "Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat" ]; let
+                    months=['Jan','Feb','Mar','Apr','May','June','July','Sep','Oct','Nov','Dec']
+                    couponData[i].expireAt.date=months[new Date(couponData[i].expireAt).getMonth()-1]+' '+new Date(couponData[i].expireAt).getDate()+' '+dayNames[new
+                    Date(couponData[i].expireAt).getDay()] %>
+                    <tr>
+                      <td>
+                        <%=i+1%>
+                      </td>
+                      <td>
+                        <%=couponData[i].name%>
+                      </td>
+                      <td>
+                        <%=couponData[i].amount%>
+                      </td>
+                      <td>
+                        <%=couponData[i].validity%>
+                      </td>
+                      <td>
+                        <%=couponData[i].expireAt.date%>
+                      </td>
+                      <td>
+                        <%=couponData[i].maxUsers%>
+                      </td>
+                      <td>
+                        <%=couponData[i].users.length%>
+                      </td>
+                      <td>
+                        <%if(couponData[i].disabled){%>
+                          <button onclick="location='enableCoupon?id=<%=couponData[i]._id%>'" class="btn btn-outline-success">Enable</button>
+                          <%}else{%>
+                            <button onclick="location='disableCoupon?id=<%=couponData[i]._id%>'" class="btn btn-outline-danger">Disable</button>
+
+                            <%}%>
+                      </td>
+                      <td>
+                        <button onclick="location='editCoupon?id=<%=couponData[i]._id%>'" class="btn btn-outline-primary">Edit</button>
+                      </td>
+                    </tr>
+                    <%}}else{%>
+                      No users found!
+                      <%}%>
+
+            </tbody>
+          </table>
+          <br class="fixed">
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+      function add() {
+        let name = document.getElementById('search').value
+        $.ajax({
+          url: "/admin/addCategory",
+          method: "post",
+          data: {
+            name: name
+          },
+          success: (response) => {
+            if (response.success) {
+              Swal.fire({
+                title: "Category added",
+                time: 1000,
+                icon: "success"
+              })
+            }
+            else {
+              Swal.fire({
+                title: "Category removed",
+                time: 1000,
+                icon: "error"
+              })
+            }
+            setTimeout(() => {
+              location.reload()
+            }, 1000);
+          }
+        })
+      }
+    </script>
+  </div>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>
