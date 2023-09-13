@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config()
 async function connect(req,res){
-    mongoose.connect('mongodb+srv://sirajju:242424@cluster0.xhhl5g0.mongodb.net/test')
+    mongoose.connect(process.env.MONGO_ATLAS)
   .then(() => {
     console.log('Connected to MongoDB');
   })
