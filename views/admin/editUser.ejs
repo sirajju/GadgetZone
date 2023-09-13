@@ -1,0 +1,45 @@
+<%- include('header.ejs')%>
+  <div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="card col-lg-6">
+      <h5 class="card-title fw-semibold m-4">Edit User</h5>
+      <div class="card-body">
+        <form method="post">
+
+          <label for="exampleInputEmail1" class="form-label">Username</label>
+          <input type="text" value="<%=userData.username%>" name="username" class="form-control" id="username"
+            aria-describedby="emailHelp">
+          <label for="exampleInputPassword1" class="form-label">Email</label>
+          <input type="text" value="<%=userData.email%>" type="email" id="email" name="email" class="form-control"
+            id="exampleInputPassword1">
+          <label for="exampleInputPassword1" class="form-label mt-3">Phone</label>
+          <input value="<%=userData.phone%>" name="phone" class="form-control" id="phone">
+          <div class="error text-danger">
+
+          </div>
+          <button type="button" onclick="validate()" class="btn btn-primary mt-2 col-lg-12">Update</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      const error = document.querySelector('.error')
+      function validate() {
+        let flag = true
+
+        const inputs = document.querySelectorAll('input').forEach((inp) => {
+          if (inp.value == '') {
+            error.innerHTML = 'Please fill the ' + inp.id
+            flag = false
+          }
+        })
+
+        if (flag) {
+          const form = document.querySelector('form').submit()
+        }
+      }
+    </script>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

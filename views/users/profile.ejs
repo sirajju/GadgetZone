@@ -1,0 +1,122 @@
+<%- include('header.ejs') %>
+  <div class="row mt-5" style="display: flex;align-items: center;justify-content: center;">
+
+    <div class="rightContainer col-lg-3 m-5">
+      <section class="team">
+        <div class="d-flex align-items-stretch">
+          <div class="member" data-aos="fade-up" data-aos-delay="100">
+            <div class="member-img">
+              <img src="../assets/images/profile/user-1.jpg" class="img-fluid" alt="">
+              <div class="social">
+                <a href=""><i class="bi bi-twitter"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>
+                <%=userData.username%>
+              </h4>
+              <span>
+                <%=userData.email%>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="leftContainer col-lg-4">
+      <div class="container col-lg-6">
+        <form action="" method="post">
+          <label for="">Username :</label>
+        <input type="text" value="<%=userData.username%>" id="username" name="username" class="form-control">
+        <label for="">Email : </label>
+        <input type="text" disabled value="<%=userData.email%>" class="form-control">
+        <a href="changePassword" class="btn btn-outline-danger mx-2">Change Password</a>
+        <button type="button" class="btn btn-outline-success mx-2" onclick="go()">Save</button>
+        </form>
+        
+      </div>
+    <script>
+    </script>
+    </div>
+    <div class="walletContainer col-lg-3 mx-5">
+      <h1>Wallet : ₹<%=userData.wallet%></h1>
+      <div style="overflow-y: scroll;width: 100%;">
+        <%if(userData.walletHistory.length!=0){%>
+          <%for(let i=userData.walletHistory.length-1;i>=0;i--){%>
+           <p class="walletAmntDtls"><%=i+1%>.  ₹<%=userData.walletHistory[i].amount%> <%if(userData.walletHistory[i].transaction=='Credited'){%> <span style="color: green;"><%=userData.walletHistory[i].transaction%></span> <%}else{%><span style="color: red;"><%=userData.walletHistory[i].transaction%></span><%}%> At <%=new Date(userData.walletHistory[i].date).toISOString().substring(0,10)%></p>
+         <%}%>
+         <%}else{%>
+           <span style="color: red;">You dont have any wallet transcation</span>
+           <%}%>
+      </div>
+    </div>
+  </div>
+  <script>
+    function go(){
+      const username = document.getElementById('username')
+      console.log(username);
+      Swal.fire({
+        title:"Do you want to save username ?",
+        icon:"question",
+        showDenyButton:true,
+        confirmButtonText:"Yes",
+        denyButtonText:"No"
+      }).then((result)=>{
+        if(result.isConfirmed){
+          $.ajax({
+            method:"post",
+            url:"profile",
+            data:{
+              username:username.value
+            },
+            success:(response)=>{
+              if(response.success){
+                location.reload()
+              }
+            }
+          })
+        }
+      })
+    }
+    </script>
+  <style>
+    .walletAmntDtls {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+    .walletContainer{
+      padding: 20px;
+      box-shadow: 1px 1px 20px 5px rgb(171, 168, 168) ;
+      height: 60vh;
+      margin-top: 10px;
+      border-radius: 10px;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
+    button a{
+      margin-top: 30px;
+    }
+    
+    .leftContainer {
+      box-shadow: 1px 1px 20px 5px rgb(171, 168, 168) ;
+      height: 40vh;
+      margin-top: 100px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    input {
+      margin: 10px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+  </style>
+  <%- include('footer.ejs') %>

@@ -1,0 +1,40 @@
+<%- include('header.ejs')%>
+<style>
+    input{
+        width: 50vh !important;
+        margin-left: 10px;
+    }
+    .lbl{
+        margin-left: 410px;
+    }
+</style>
+      <div class="container-fluid">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold mb-4">Add Banner</h5>
+              <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                      <label for="exampleInputEmail1" class="form-label">Banner Name</label>
+                      <label for="exampleInputPassword1" class="form-label"><span class="lbl">Banner images</span></label>
+                    <div class="mb-3 d-flex">
+                      <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <input type="file" name="img" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

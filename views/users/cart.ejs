@@ -1,0 +1,254 @@
+<%-include('header.ejs')%>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  </head>
+
+  </style>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+
+    table tr {
+      appearance: none;
+    }
+
+    .scope {
+      font-size: 18px;
+    }
+  </style>
+  <section class="testimonials bar top-div row" style=" height:auto;margin-top: 10vh;">
+    <% if(cartData.length){ %>
+        <% cartData.forEach((product)=>{ %>
+              <div class="testimonials-slider col-lg-3 col-10 col-sm-6 d-flex justify-content-center align-items-center">
+                <div class="testimonial-wrap">
+                  <div class="testimonial-item">
+                    <img src="assets/productImages/<%=product._id.productImage%>" class="testimonial-img" alt="">
+                    <h3>
+                      <%=product._id.productName%>
+                    </h3>
+                    <p class="p-3">
+                      <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    <h3 class="price_<%=product._id.productId%>">Price : ₹<%=product._id.price%>
+                    </h3>
+                    <div class="">
+                      </span>
+                        <input type="button" onclick="addToCart('<%=product._id.productId%>','dec')" class="bi-plus btn"
+                          value="-" style="border:1px solid black;border-radius:100px;">
+                          <span class="mx-2 my-2 fw-bold">Quantity : <b class="quantity_<%=product._id.productId%>">
+                              <%=product._id.Quantity%>
+                            </b></span>
+                          <span class="input-group-btn mx-2">
+                            <input type="button" class="bi-plus btn"
+                              onclick="addToCart('<%=product._id.productId%>','inc')" value="+"
+                              style="border:1px solid black;border-radius:100px;" data-type="plus" data-field="">
+
+                            </button>
+                          </span>
+                    </div>
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                    </p>
+                    <p class="row" style="display: flex;">
+                      <button onclick="rmCart('<%=product._id.productId%>')" style="width: 150px;"
+                        class="btn btn-danger">Remove</button>
+                      <button style="width: 150px;" class="btn btn-primary"
+                        onclick="location='/showProduct?id=<%=product._id.productId%>'">Show item</button>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <%})%>
+            <br>
+
+            <%} %>
+              <% if(cartData.length==0){ %>
+                <center>
+                  <h1 style="margin-top: 25vh;">No product found</h1>
+
+                  <button onclick="location.href='/shop'" class="btn btn-outline-success mt-5">Add products</button>
+                </center>
+                <%}%>
+      </div>
+  </section>
+  <center>
+    <%if(cartData.length){%>
+      <button onclick="location='/checkout'" style="height: 50px;width: 200px;"
+        class="btn btn-checkout btn-outline-success">Checkout now</button></div>
+
+      <%}%>
+  </center>
+  <script>
+    
+    function addToCart(id, action) {
+      const quantity = document.querySelector('.quantity_'+id)
+      if(quantity.innerText.trim() == '1'&&action!='inc'){
+        rmCart(id)
+        return false
+      }
+      const price = document.querySelector('.price_'+id)
+      $.ajax({
+        url: 'addToCart',
+        method: 'post',
+        data: {
+          id: id,
+          action: action
+        },
+        success: (response) => {
+          if (response.success) {
+            Swal.fire({
+              title: '<b>Item added to cart',
+              timer: 1000,
+              showConfirmButton: false,
+              icon: "success"
+            })
+          }
+          else {
+            Swal.fire({
+              title: " item total count : " + response.n.Quantity,
+              timer: 1000,
+              icon: "warning",
+              showConfirmButton: false,
+            })
+            price.innerText = 'Price : ₹'+response.n.price
+            quantity.innerText = response.n.Quantity
+          }
+          // setTimeout(() => {
+          //     location.reload()
+          // }, 1000)
+        }
+      })
+    }
+    function rmCart(id) {
+      Swal.fire({
+        title: 'Do you want to remove item ?',
+        confirmButtonText: "Yes",
+        showDenyButton: true,
+        icon: "question",
+        denyButtonText: "No"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: '/removeFromCart',
+            method: 'post',
+            data: {
+              id: id
+            },
+            success: (response) => {
+              if (response.success) {
+                Swal.fire({
+                  title: "Item removed from cart",
+                  icon: "success",
+                  timer: 1000,
+                  showConfirmButton: false,
+                })
+              }
+              else {
+                Swal.fire({
+                  title: "Something went wrong",
+                  icon: "error",
+                  timer: 1000,
+                  showConfirmButton: false,
+                })
+              }
+              setTimeout(() => {
+                location.reload()
+              }, 1000)
+            }
+          })
+        } else {
+
+        }
+      })
+    }
+  </script>
+  <style>
+    button {
+      margin: 5vh;
+    }
+
+    .top-div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (min-width:0px) and (max-width:500px) {
+      .form {
+        margin-left: 50px;
+        width: 50px;
+      }
+
+      .testimonial-wrap {
+        width: 360px;
+        margin: 0;
+      }
+
+      button {
+        margin: 10px;
+      }
+      .top-div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  </style>
+  <div class="swiper-pagination"></div>
+  </div>
+
+  <br class="fixed">
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>

@@ -1,0 +1,143 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid" style="width: 150vh;">
+    <div class="card w-100 h-100 position-relative overflow-hidden">
+      <div class="card-title fw-semibold m-3 row" style="height: 50px;;">
+        <form method="post" class="form-inline" style="display: flex;">
+          <input id="search" name="user" required class="form-control" style="width: 50vh;" type="search"
+            placeholder="Search" aria-label="Search">
+          <button type="button" onclick="location='/admin/products?search='+document.getElementById('search').value" class="btn btn-outline-success mx-3">Search</button>
+          <span class="m-3">Filter : </span><select onchange="location='/admin/products?filter='+this.value" class="form-control m-2" style="max-width: 100px;max-height: 40px;" name="" id="">
+            <option value="">-Select-</option>
+            <option value="true"><b>Activated</b></option>
+            <option value="false"><b>Deactivated</b></option>
+            <%for(let i=0;i<categoryData.length;i++){%>
+              <option value="<%=categoryData[i].name%>"><%=categoryData[i].name%></option>
+
+              <%}%>
+          </select>
+          <button onclick="location='/admin/products'" class="btn btn-outline-danger mx-2" >Reset</button>
+          <button href="/admin/addProduct" class="btn btn-outline-primary mx-4" >Add product</button>
+        </form>
+      </div>
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Discount</th>
+                <th scope="col">Active</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Image</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof productData!='undefined' ){%>
+                <%for(let i=0;i<productData.length;i++){%>
+
+                  <tr>
+                    <td>
+                      <%=i+1%>
+                    </td>
+                    <td>
+                      <%=productData[i].name%>
+                    </td>
+                    <td style="overflow-x: hidden;white-space: nowrap;text-overflow:ellipsis;max-width: 150px;">
+                      <%=productData[i].description%>
+                    </td>
+                    <td>
+                      <%=productData[i].price%>
+                    </td>
+                    <td>
+                      <%=productData[i].category%>
+                    </td>
+                    <td>
+                      <%=productData[i].stock%>
+                    </td>
+                    <td>
+                      <%=productData[i].discount%>
+                    </td>
+                    <td>
+                      <%if(productData[i].isActive){%>
+                        <a href="deactivate?id=<%=productData[i]._id%>"><button
+                            class="btn btn-outline-danger mx-1">deActivate</button></a>
+
+                        <%}else{%>
+                          <a href="activate?id=<%=productData[i]._id%>"><button
+                              class="btn btn-outline-success mx-1">Activate</button></a>
+                          <%}%>
+                    </td>
+                    <td class="d-flex">
+                      <a href="editProduct?id=<%=productData[i]._id%>"><button
+                         class="btn btn-outline-primary mx-1">Edit</button></a>
+                        <a><button
+                          onclick="deleteProduct('<%=productData[i]._id%>')" class="btn btn-outline-danger mx-1">Delete</button></a>
+                    </td>
+                    <td>
+                      <img class="img" src="/assets/productImages/<%=productData[i].image[0]%>" alt="Error">
+
+                    </td>
+                  </tr>
+                  <%}}else{%>
+                    No products
+                    <%}%>
+            </tbody>
+          </table>
+
+          <br class="fixed">
+        </div>
+        <script>
+          function deleteProduct(id){
+            Swal.fire({
+              title:'Do you want to remove the Product ?',
+              confirmButtonText:"Yes",
+              showDenyButton:true,
+              icon:"question",
+              denyButtonText:"No"
+            }).then((result)=>{
+              if(result.isConfirmed){
+                location.href = 'delete?id='+id
+              }
+            })
+          }
+        </script>
+        <style>
+          .img {
+            width: 30px;
+            transition: 0.5s;
+            border-radius: 100px;
+          }
+
+          .img:hover {
+            transition: 0.5s;
+            transform: scale(5);
+            cursor: pointer;
+          }
+        </style>
+      </div>
+    </div>
+    <script>
+
+    </script>
+  </div>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>

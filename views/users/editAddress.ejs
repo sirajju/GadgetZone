@@ -1,0 +1,62 @@
+<%- include('header.ejs') %>
+<% async: true %>
+<title>
+  <% if(typeof title !='undefined'){ %>
+    <%=title%>
+    <%}
+    else{%>
+      HomePage
+      <%}%>
+    
+</title>
+<link rel="stylesheet" href="assets/css/css_register.css">
+<body>
+  <div class="login-container row">
+    <div class="login-box" style="max-width: 500px;width: 30%;">
+      <h2 style="margin-left:18%">Update address</h2>
+      <form id="form-login" method="post">
+        <div class="form-group">
+          <label for="email">Name</label>
+          <input value="<%=addressData.name%>" class="form-control" name="name" required>
+          <label>Phone</label>
+          <input value="<%=addressData.phone%>" required type="number" class="form-control" id="username" name="phone">
+          <label for="password">Pincode </label>
+          <input value="<%=addressData.pin%>" required type="number" name="pincode" class="form-control">
+          <label for="password">Locality</label>
+          <input required name="locality" value="<%=addressData.locality%>" class="form-control">
+          <label for="password">Address (Area and Street)</label>
+          <input value="<%=addressData.address%>" required name="address" style="height:100px" type="text" class="form-control">
+          <label for="password">City/Town</label>
+          <input value="<%=addressData.city%>" required name="city"  class="form-control">
+          <label for="password">State</label>
+          <input value="<%=addressData.state%>" required name="state" class="form-control">
+          <font size="2" class="error" style="font-weight: bold;color: red;">
+          <%if(typeof message!='undefined'){ %>
+            <%=message%>
+            <%}%>
+          </font>
+        </div>
+        <button id="btn" onclick="h()" class="btn btn-login">Update</button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+  integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function h(){
+      let inp = document.querySelectorAll('input');
+      let error = document.querySelector('.error')
+      error.innerText = 'Please enter the '
+
+      inp.forEach((el)=>{
+        if(el.value==''){
+          error.innerText += ','+el.getAttribute('name')
+        }
+      })
+      
+    }
+  </script>
+</body>
+<%- include('footer.ejs') %>
+</html>

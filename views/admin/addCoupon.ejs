@@ -1,0 +1,74 @@
+<%- include('header.ejs')%>
+    <style>
+        input {
+            width: 48vh;
+            margin: 10px;
+        }
+    </style>
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+        <div class="card  col-lg-6" style="margin-top:25vh;">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Add Coupon</h5>
+                <form method="post">
+                    <div style="display: flex;flex-direction: column;">
+                        <input required placeholder="Coupon code" id="code" name="code" type="text" class="form-control">
+                        <input required placeholder="Amount" oninput="checkAmount(this)" id="amount" name="amount" type="number"
+                            class="form-control">
+                        <input required placeholder="Expire" id="expire" oninput="checkDate(this)" name="expire" type="date" class="form-control">
+                        <input required placeholder="Max users" id="max-users" name="maxUsers" type="number" class="form-control">
+                    </div>
+                    <div class="error text-danger fw-bolder">
+                        <%if(typeof message!='undefined'){%>
+                            <%=message%>
+                            <%}%>
+                    </div>
+            </div>
+            <button type="button" onclick="validate()" class="btn btn-primary mx-2">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const error = document.querySelector('.error')
+        function validate(){
+            let flag = true
+            const inputs = document.querySelectorAll('input').forEach((inp)=>{
+            if(inp.value==''){
+                error.innerHTML = 'Please fill the '+inp.id
+                flag=false
+            }
+        })
+        if(flag){
+            const form = document.querySelector('form').submit()
+        }
+        }
+        function checkAmount(input){
+            if(input.value>100){
+                input.value = 100
+                error.innerHTML = 'Invalid amount'
+            }else{
+                error.innerHTML = ''
+            }
+        }
+        function checkDate(input){
+            const date = new Date(input.value).getTime()
+            const curr = new Date().getTime()
+            if(date<curr){
+                input.value=''
+                error.innerHTML = 'Invalid date'
+            }
+            else{
+                error.innerHTML = ''
+            }
+        }
+    </script>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

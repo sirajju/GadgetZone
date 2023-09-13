@@ -1,0 +1,93 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid">
+    <div class="card w-100 h-100 position-relative overflow-hidden">
+      <div class="card-title fw-semibold m-3 row" style="height: 50px;;">
+          <button onclick="location='/admin/addBanner'" class="btn btn-outline-primary col-lg-2">Add Banner</button>
+        </form>
+      </div>
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table mt-5">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">List/Unlist</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof bannerData!='undefined' ){%>
+                <%for(let i=0;i<bannerData.length;i++){%>
+                  <tr>
+                    <td>
+                      <%=i+1%>
+                    </td>
+                    <td>
+                      <%=bannerData[i].name%>
+                    </td>
+
+                    <td>
+                      <%if(bannerData[i].is_unlisted){%>
+                        <button onclick="location='listbanner?id=<%=bannerData[i]._id%>'"
+                          class="btn btn-outline-success">List</button>
+
+                        <%}else{%>
+                          <button onclick="location='unlistbanner?id=<%=bannerData[i]._id%>'"
+                            class="btn btn-outline-danger">Unlist</button>
+
+                          <%}%>
+                    </td>
+                    <td>
+                      <img class="img" src="/assets/productImages/<%=bannerData[i].image%>" alt="Error">
+                    </td>
+                    <td>
+                      <button class="btn btn-outline-primary" onclick="location='updateBanner?id=<%=bannerData[i]._id%>'">Update</button>
+                    </td>
+                  </tr>
+                  <%}}else{%>
+                    No users found!
+                    <%}%>
+
+            </tbody>
+          </table>
+          <br class="fixed">
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+
+    </script>
+  </div>
+  <style>
+    .img {
+      width: 60px;
+      transition: 0.5s;
+      border-radius: 100px;
+    }
+    .img:hover{
+      transition: 0.5s;
+      transform: scale(5);
+      cursor: pointer;
+    }
+  </style>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>

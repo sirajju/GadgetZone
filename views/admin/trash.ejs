@@ -1,0 +1,75 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid">
+    <div class="card w-100 h-100 position-relative overflow-hidden">
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Trashed Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Type</th>
+                <th scope="col">Identity</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof trashedData!='undefined' ){%>
+                <%for(let i=0;i<trashedData.length;i++){%>
+
+                    <tr>
+                      <td>
+                        <%=i+1%>
+                      </td>
+                      <td>
+                        <%=trashedData[i].date.toISOString().substring(0,10)%>
+                    </td>
+                    <td>
+                        <%=trashedData[i].date.toISOString().substring(11,16)%> <b>(ISO)</b>
+
+                    </td>
+                      <td>
+                        <%=trashedData[i].type%>
+                      </td>
+                      <td>
+                        <%=trashedData[i].identity%>
+                      </td>
+                      <td>
+                        <%=trashedData[i].admin%>
+                      </td>
+                      <td>
+                            <button onclick="location='restoreTrash?id=<%=trashedData[i]._id%>'" class="btn btn-outline-primary">Restore</button>
+                      </td>
+                    </tr>
+                    <%}}else{%>
+                      <h1>Trash is empty</h1>
+                      <%}%>
+
+            </tbody>
+          </table>
+          <br class="fixed">
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   
+  </div>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>

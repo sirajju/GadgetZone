@@ -1,0 +1,204 @@
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+   <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+  integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+  <span style="margin-left: 5vh;">
+    <a href="javascript:window.history.back()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        style="fill: rgb(255, 250, 250);transform: msFilter; background: rgb(58, 166, 224);border-radius: 100px;width: 40px;height: 40px;padding: 5px;">
+        <path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path>
+      </svg>
+    </a>
+  </span>
+
+  <div class="container d-flex align-items-center justify-content-between">
+    <div class="logo">
+      <h1><a href="/">Gadget<span
+            style="color: white;background: rgb(58, 166, 224); border-radius: 5px; padding: 3px;">Zone</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="">About</a></li>
+        <li><a class="nav-link scrollto" href="/">Services</a></li>
+
+        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <%if(typeof username !='undefined' ){%>
+          <li class="dropdown">
+            <a href="#"><span>Shop</span>
+              <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="/shop">Products
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-basket" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="green" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                    <path d="M5.001 8h13.999a2 2 0 0 1 1.977 2.304l-1.255 7.152a3 3 0 0 1 -2.966 2.544h-9.512a3 3 0 0 1 -2.965 -2.544l-1.255 -7.152a2 2 0 0 1 1.977 -2.304z"></path>
+                    <path d="M17 10l-2 -6"></path>
+                    <path d="M7 10l2 -6"></path>
+                 </svg> -->
+                </a></li>
+              <li><a href="/cart">Cart
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-bolt" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="black" fill="yellow" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                    <path d="M13.5 17h-7.5v-14h-2"></path>
+                    <path d="M6 5l14 1l-.858 6.004m-2.642 .996h-10.5"></path>
+                    <path d="M19 16l-2 3h4l-2 3"></path>
+                 </svg> -->
+                </a></li>
+              <li><a href="/wishlist">Whishlist
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-jewish-star-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="red" fill="red" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M8.433 6h-5.433l-.114 .006a1 1 0 0 0 -.743 1.508l2.69 4.486l-2.69 4.486l-.054 .1a1 1 0 0 0 .911 1.414h5.434l2.709 4.514l.074 .108a1 1 0 0 0 1.64 -.108l2.708 -4.514h5.435l.114 -.006a1 1 0 0 0 .743 -1.508l-2.691 -4.486l2.691 -4.486l.054 -.1a1 1 0 0 0 -.911 -1.414h-5.434l-2.709 -4.514a1 1 0 0 0 -1.714 0l-2.71 4.514z" stroke-width="0" fill="red"></path> -->
+                  <!-- </svg> -->
+                </a></li>
+              <li><a href="/orders">My orders
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-bolt" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="black" fill="yellow" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                    <path d="M13.5 17h-7.5v-14h-2"></path>
+                    <path d="M6 5l14 1l-.858 6.004m-2.642 .996h-10.5"></path>
+                    <path d="M19 16l-2 3h4l-2 3"></path>
+                 </svg> -->
+                </a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#"><span>Settings</span>
+              <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="/profile">My profile</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="nav-link" href="/profile">
+              Welcome ,<b class="animation">
+                <%=username%>
+              </b>
+              <%}else{%>
+                <button onclick="location='/login'" class="mx-5  btn btn-outline-primary">Sign in</button>
+                <%}%>
+            </a>
+          </li>
+      </ul>
+      <%if(typeof message!='undefined' ){%>
+        <input type="hidden" class="message" value="<%=message%>">
+        <%if(typeof success!='undefined' ){%>
+          <script>
+            var message = document.querySelector('.message').value
+            var Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              background: "green",
+              timerProgressBar: true,
+              color:"white"
+            })
+            Toast.fire({
+              title: message,
+              icon: "success"
+            })
+          </script>
+          <%}else if(typeof warning!='undefined' ){%>
+            <script>
+              var message = document.querySelector('.message').value
+              var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+              })
+              Toast.fire({
+                title: message,
+                icon: "warning"
+              })
+            </script>
+            <%}else{%>
+              <script>
+                var message = document.querySelector('.message').value
+                var Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  color: "black"
+                })
+                Toast.fire({
+                  title: message,
+                  icon: "error"
+                })
+              </script>
+              <%}%>
+                <%}%>
+                  <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+    <style>
+      .animation {
+        animation: go 5s infinite;
+      }
+
+      @keyframes go {
+        0% {
+          color: red;
+        }
+
+        25% {
+          color: blue;
+        }
+
+        50% {
+          color: rgb(0, 145, 255);
+        }
+
+        75% {
+          color: green;
+        }
+
+        100% {
+          color: red;
+        }
+      }
+    </style>
+  </div>
+</header><!-- End Header -->

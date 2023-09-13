@@ -1,0 +1,95 @@
+<%- include('header.ejs')%>
+
+    <body onload="load('<%=orderData.orderStatus%>')" data-aos="fade-up" data-aos-delay="100">
+        <style>
+            input {
+                margin: 10px;
+            }
+        </style>
+        <div class="container-fluid d-flex justify-content-center align-items-center">
+            <div class="card  col-lg-6" style="margin-top:25vh;">
+                <div class="card-body">
+                    <script>
+                        function load(order) {
+                            document.querySelectorAll('input').forEach((inp) => {
+                                if (order != 'cancelled') {
+                                    if (inp.value == order) {
+                                        inp.checked = 'true'
+                                    }
+                                    else if(inp.value=='cancelled'){
+                                        inp.disabled = true
+                                    }
+                                } else {
+                                    if(inp.value!=='cancelled'){
+                                        inp.disabled = 'true'
+                                    }
+                                    inp.checked = 'true'
+
+                                }
+
+                            })
+                        }
+                    </script>
+                    <form method="post">
+                        <div style="display: flex;flex-direction: column;align-items: center;">
+                            <h3 class=" fw-semibold mb-4">Order status</h3>
+                            <h4><input type="radio" value="pending" name="orderStatus">Pending</h4>
+                            <h4><input type="radio" value="placed" name="orderStatus">Placed</h4>
+                            <h4><input type="radio" value="delivered" name="orderStatus">Delivered</h4>
+                            <h4><input type="radio" value="cancelled" name="orderStatus">Cancelled</h4>
+                        </div>
+                        <div class="error text-danger fw-bolder">
+                            <%if(typeof message!='undefined' ){%>
+                                <%=message%>
+                                    <%}%>
+                        </div>
+                </div>
+                <button type="button" onclick="validate()" class="btn btn-primary mx-2">Update</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            const error = document.querySelector('.error')
+            function validate() {
+                let flag = true
+                const inputs = document.querySelectorAll('input').forEach((inp) => {
+                    if (inp.value == '') {
+                        error.innerHTML = 'Please fill the ' + inp.id
+                        flag = false
+                    }
+                })
+                if (flag) {
+                    const form = document.querySelector('form').submit()
+                }
+            }
+            function checkAmount(input) {
+                if (input.value > 100) {
+                    input.value = 100
+                    error.innerHTML = 'Invalid amount'
+                } else {
+                    error.innerHTML = ''
+                }
+            }
+            function checkDate(input) {
+                const date = new Date(input.value).getTime()
+                const curr = new Date().getTime()
+                if (date < curr) {
+                    input.value = ''
+                    error.innerHTML = 'Invalid date'
+                }
+                else {
+                    error.innerHTML = ''
+                }
+            }
+        </script>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/sidebarmenu.js"></script>
+        <script src="../assets/js/app.min.js"></script>
+        <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

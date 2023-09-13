@@ -1,0 +1,146 @@
+<%- include('header.ejs') %>
+  <% async: true %>
+    <title>
+      <% if(typeof title !='undefined' ){ %>
+        <%=title%>
+          <%} else{%>
+            HomePage
+            <%}%>
+
+    </title>
+    <link rel="stylesheet" href="assets/css/css_register.css">
+
+    <body>
+      <div class="login-container">
+        <div class="login-box">
+          <h2 style="margin-left:30%">Register</h2>
+          <form id="form-login" method="post">
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" placeholder="Enter email" id="email" name="email" required>
+              <label for="username">Phone</label>
+              <input type="email" placeholder="Enter phone with contry code" id="phone" name="phone">
+              <label for="username">Username</label>
+              <input type="email" id="username" placeholder="Enter username" name="username">
+              <label for="password">Password</label>
+              <input type="email" placeholder="Enter password" id="password" name="password">
+              <font size="2" class="strength" style="font-weight: bold;"></font>
+
+              <label for="password">Confirm password</label>
+              <input type="email" placeholder="Enter confirm password" id="con_password">
+              <font size="2" class="error" style="font-weight: bold;color: red;">
+                <%if(typeof message!='undefined' ){ %>
+                  <%=message%>
+                    <%}%>
+              </font>
+            </div>
+            <a id="btn" onclick="submit()" class="btn btn-login">Submit</a>
+          </form>
+          <hr>
+          <center>
+            <font size="2" style="font-weight: bold;"><a href="/login">Login here</a></font>
+          </center>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script>
+        let usrname = document.getElementById('username');
+        let error = document.querySelector('.error')
+        let btn = document.getElementById('btn')
+        usrname.addEventListener('input', () => {
+          $.ajax({
+            url: '/checkUsername',
+            method: 'post',
+            data: {
+              user: usrname.value
+            },
+            success: (response) => {
+              if (response.isTaken || usrname.value == '') {
+
+                usrname.style.border = '2px solid red'
+                btn.style.display = 'none'
+              }
+              else {
+                error.innerHTML = ''
+                usrname.style.border = '2px solid green'
+                btn.style.display = 'block'
+              }
+            }
+          })
+        })
+        function showPass() {
+          const password = document.getElementById('password')
+          password.type = password.type == 'text' ? 'password' : 'text'
+        }
+        function submit() {
+          let username = document.getElementById('email').value;
+          let email = document.getElementById('username').value;
+          let password = document.getElementById('password').value;
+          let con_pass = document.getElementById('con_password').value;
+          let form = document.getElementById('form-login')
+          let error = document.querySelector('.error');
+          let strength = checkPassword()
+          if (username == '' && password == '') {
+            error.innerHTML = 'Please fill it'
+          }
+          else {
+            if (username == '' || email == '') {
+              error.innerHTML = 'Please enter email and username'
+            }
+            if (password == '' || con_pass == '') {
+              error.innerHTML = 'Please enter password'
+            }
+            else {
+              if (username != '' && password != '' && email != '' && con_password != '' && strength) {
+                form.submit()
+              }
+            }
+          }
+        }
+        let password = document.getElementById('password')
+        password.addEventListener('input', checkPassword)
+
+        function checkPassword() {
+          let pass = document.getElementById('password').value
+          let div = document.querySelector('.strength')
+
+          let lower = /[a-z]/;
+          let upper = /[A-Z]/;
+          let digit = /[0-9]/;
+          let special = /[-\@\#\$\%\(\)\{\}\[\]]/
+
+          const hasLower = lower.test(pass)
+          const hasUpper = upper.test(pass)
+          const hasDigit = digit.test(pass)
+          const hasSpecial = special.test(pass)
+          if (hasDigit && hasLower && hasUpper && hasSpecial&&pass.length>=8) {
+            div.innerHTML = '<font color=green>Good password</font>'
+            return true
+          }
+          else if (!hasSpecial && hasDigit && hasLower && hasUpper) {
+            div.innerHTML = '<font color=orange>Specail charecter required</font>'
+          }
+          else if (hasSpecial && !hasDigit && hasLower && hasUpper) {
+            div.innerHTML = '<font color=orange>A digit is required</font>'
+          }
+          else if (hasSpecial && hasDigit && hasLower && !hasUpper) {
+            div.innerHTML = '<font color=orange>Uppercase letter required</font>'
+          }
+          else if(pass.length<8){
+            div.innerHTML = '<font color=orange>Minimum 8 chars required</font>'
+
+          }
+          else {
+            div.innerHTML = '<font color=red>Password case sensitive</font>'
+          }
+          return false
+        }
+
+
+      </script>
+    </body>
+    <%- include('footer.ejs') %>
+
+      </html>

@@ -1,0 +1,82 @@
+<%- include('header.ejs') %>
+<% async: true %>
+<title>
+  <% if(typeof title !='undefined'){ %>
+    <%=title%>
+    <%}
+    else{%>
+      HomePage
+      <%}%>
+    
+</title>
+<link rel="stylesheet" href="assets/css/css_login.css">
+<body>
+  <%if(typeof isMobile !=='undefined'){%>
+    <script>
+      
+      Swal.fire(
+        'Alert',
+        'Look like you are using mobile phone so there are some missconfigurations (Many contents of this websites are not provided by template) in responsive design.This website is only for test purpose (PC) and we\'r sorry for this mistake. From sirajju!',
+        'warning'
+      )
+    </script>
+    <%}%>
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form id="form-login" method="post">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+          <label for="password">Password</label>
+          <input  type="password" id="password" name="password" required>
+          <font size="2" class="error" style="font-weight: bold;color: red;">
+          <%if(typeof message!='undefined'){ %>
+            <%=message%>
+            <%}%>
+          </font>
+        </div>
+        <input type="checkbox" onchange="showPass()" data-toggle="toggle">
+        <font size="2" style="font-weight: bold;">Show password</font>
+      <font size="2" style="font-weight: bold; margin-left: 27%;"><a href="/forgetPass">Forgetpassword?</a></font>
+        
+        <a onclick="submit()"class="btn btn-login">Login</a>
+      </form>
+      <hr>
+      <font size="2" style="font-weight: bold; margin-left: 13vh;"><a href="/register">Register here</a></font>
+
+    </div>
+  </div>
+  
+  <script>
+    function showPass(){
+      const password = document.getElementById('password')
+      password.type = password.type=='text'?'password':'text'
+    }
+    function submit(){
+      let username = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let form = document.getElementById('form-login')
+      let error = document.querySelector('.error');
+      if(username==''&&password==''){
+        error.innerHTML = 'Please fill it'
+      }
+      else{
+        if(username==''){
+        error.innerHTML = 'Please enter email'
+      }
+      if(password==''){
+        error.innerHTML = 'Please enter password'
+      }
+      else{
+        if(username!=''&&password!=''){
+        form.submit()
+      }
+      }
+      }
+    }
+  </script>
+</body>
+
+<%- include('footer.ejs') %>
+</html>

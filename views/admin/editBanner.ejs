@@ -1,0 +1,73 @@
+<%- include('header.ejs')%>
+    <style>
+        input {
+            width: 48vh;
+            margin: 10px;
+        }
+    </style>
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+        <div class="card  col-lg-6 " style="margin-top:5vh;">
+            <h2 class="fw-semibold m-5">Edit banner</h2>
+
+            <div class="card-body ">
+                <form method="post" enctype="multipart/form-data">
+                    <div style="display: flex;flex-direction: column;">
+                        <img width="200" class="img" src="/assets/productImages/<%=bannerData.image%>">
+                        <input required value="<%=bannerData.name%>" placeholder="Enter name" id="name" name="name"
+                            type="text" class="form-control mt-5">
+                        <input required id="image" name="img" type="file" class="form-control">
+                        <input required  name="isNameOnlyUpdate" id="isNameOnlyUpdate" type="checkbox"> 
+                        <p class="mx-5 text-danger">Check the box if you don't need to update image</p>
+                    </div>
+                    <div class="error text-danger fw-bolder">
+                        <%if(typeof message!='undefined' ){%>
+                            <%=message%>
+                                <%}%>
+                    </div>
+            </div>
+            <button type="button" onclick="validate()" class="btn btn-primary mx-2">Update</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        .img {
+            border-radius: 10px;
+            margin-left: 28%;
+            transition: 0.6s;
+            cursor: zoom-in;
+
+        }
+        .img:hover{
+            transform: scale(2.5);
+            transition: 0.6s;
+        }
+    </style>
+    <script>
+        const error = document.querySelector('.error')
+        function validate() {
+            const checkBox = document.querySelector('#isNameOnlyUpdate') 
+            let flag = true
+            if(!checkBox.checked){
+                const inputs = document.querySelectorAll('input').forEach((inp) => {
+                if (inp.value == '') {
+                    error.innerHTML = 'Please fill the ' + inp.id
+                    flag = false
+                }
+            })
+            }
+            if (flag) {
+                const form = document.querySelector('form').submit()
+            }
+        }
+    </script>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>

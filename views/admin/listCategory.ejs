@@ -1,0 +1,94 @@
+<%- include('header.ejs')%>
+<style>
+    table th{
+        margin-left: 50px;;
+    }
+</style>
+      <div class="container-fluid" >
+        <div class="card w-100 h-100 position-relative overflow-hidden">
+            <div class="card-title fw-semibold m-3 row" style="height: 40px;;">
+        <form method="post" class="form-inline" style="display: flex;">
+            <input id="search" name="user" required class="form-control" style="width: 50vh;" type="search" placeholder="Enter category" aria-label="Search">
+                    <a onclick="add()" class="btn btn-outline-success mx-3">Add</a>
+            </form>
+                </div>
+          <div class="card-body"style="overflow-y: scroll;">
+            <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+                <table class="table" >
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">List/Unlist</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%if(typeof categoryData!='undefined'){%>
+                        <%for(let i=0;i<categoryData.length;i++){%>
+                          <tr>
+                            <td><%=i+1%></td>
+                            <td><%=categoryData[i].name%></td>
+                            <td>
+                              <button class="btn btn-outline-primary" onclick="location='editCategory?name=<%=categoryData[i].name%>'">Rename</button>
+
+                            </td>
+                            <td><%if(categoryData[i].is_unlisted){%>
+                              <button class="btn btn-outline-primary" onclick="location='listcategory?id=<%=categoryData[i]._id%>'">List</button>
+                              <%}else{%>
+                                <button class="btn btn-outline-danger" onclick="location='unlistcategory?id=<%=categoryData[i]._id%>'">Unlist</button>
+                              
+                              <%}%></td>
+                          </tr>
+                    <%}}else{%>
+                      No users found!
+                      <%}%>
+          
+                    </tbody>
+                  </table>
+                  <br class="fixed">
+            </div>
+          </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            
+            function add(){
+                let name = document.getElementById('search').value
+                $.ajax({
+                    url:"/admin/addCategory",
+                    method:"post",
+                    data:{
+                        name:name
+                    },
+                    success:(response)=>{
+                        if(response.success){
+                            Swal.fire({
+                                title:"Category added",
+                                time:1000,
+                                icon:"success"
+                            })
+                        }
+                        else{
+                            Swal.fire({
+                                title:"Category already Exists",
+                                time:1000,
+                                icon:"error"
+                            })
+                        }
+                    }
+                })
+            }
+        </script>
+      </div>
+    </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+</body>
+
+</html>

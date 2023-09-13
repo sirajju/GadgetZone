@@ -1,0 +1,161 @@
+<%- include('header.ejs')%>
+  <style>
+    table th {
+      margin-left: 50px;
+      ;
+    }
+  </style>
+  <div class="container-fluid col-lg-12">
+    <div class="card h-100 position-relative overflow-hidden">
+      <div class="card-title fw-semibold m-3 row" style="height: 40px;;">
+        <form  style="display: flex;">
+          <button type="button" onclick="location='/admin/expotOrderToCsv'" class="btn btnexport btn-outline-success">Export to csv</button>
+          <button type="button" onclick="go(this)"  class="btn btn-outline-primary mx-2">Export to pdf</button>
+            <span class="m-3">Sort : </span><select onchange="location='/admin/orders?sort='+this.value" class="form-control m-2" style="max-width: 100px;max-height: 40px;" name="" id="">
+              <option value="">-Select-</option>
+              <option value="date">Date</option>
+              <option value="amount">Amount</option>
+          </select>
+          <span class="m-3">Filter : </span><select onchange="location='/admin/orders?filter='+this.value" class="form-control m-2" style="max-width: 100px;max-height: 40px;" name="" id="">
+            <option value="">-Select-</option>
+            <option value="online">ONLINE</option>
+            <option value="cod">COD</option>
+            <option value="wallet">WALLET</option>
+            <option value="placed">PLACED</option>
+            <option value="Delivered">DELIVERED</option>
+            <option value="cancelled">CANCELLED</option>
+        </select>
+        <span class="mx-2 mt-2"><button class="btn btn-outline-danger" onclick="location='/admin/orders'">Reset</button></span>
+        </form>
+        
+      </div>
+      <div class="card-body" style="overflow-y: scroll;">
+        <div class="container" style="height: calc(100vh - 250px); width: 100%;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Address</th>
+                <th scope="col">Total</th>
+                <th scope="col">Payment</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Products</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(typeof orderData!='undefined' ){%>
+                <%for(let i=0;i<orderData.length;i++){ %>
+                  <% let dayNames=["Sun", "Mon" , "Tue" , "Wed"
+                  , "Thu" , "Fri" , "Sat" ];
+                  let months = ['Jan','Feb','Mar','Apr','May','June','July','Sep','Oct','Nov','Dec'] 
+                  orderData[i].date.day = new Date(orderData[i].date).getDay()
+                  orderData[i].date.date = new Date(orderData[i].date).getDate()
+                  orderData[i].date.month = new Date(orderData[i].date).getMonth()
+                  %>
+                  <tr>
+                    <td>
+                      <%=months[orderData[i].date.month-1]%> <%=orderData[i].date.date%>th <%=dayNames[orderData[i].date.day]%>
+                    </td>
+                    <td><%=orderData[i]._id%></td>
+
+                    <td>
+                      <%=orderData[i].userName%>
+                    </td>
+                    <td>
+                      <%=orderData[i].address[0].name%>,<br><%=orderData[i].address[0].address%>,<br><%=orderData[i].address[0].city%>
+                    </td>
+                    <td>
+                      <%=orderData[i].totalAmount%>
+                    </td>
+                    <td>
+                      <%=orderData[i].paymentMethod%>
+                    </td>
+                    <td>
+                      <%=orderData[i].orderStatus%>
+                    </td>
+                    <td>
+                      <button onclick="location='editOrder?id=<%=orderData[i]._id%>'" class="btn btn-outline-primary">Edit</button>
+                    </td>
+                    <td>
+                      <button class="btn btn-outline-success" onclick="location='/admin/viewOrderedProducts?id=<%=orderData[i]._id%>'">View</button>
+                    </td>
+                  </tr>
+                  <%}}else{%>
+                    No users found!
+                    <%}%>
+
+            </tbody>
+          </table>
+          <br class="fixed">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function go(btn,act){
+      const child =document.createElement('span')
+      child.classList.add('spinner-border')
+      btn.innerHTML = ''
+      btn.disabled = 'true'
+      btn.appendChild(child)
+      location='exportOrderToPdf'
+    }
+    function block(id) {
+      $.ajax({
+        url: '/admin/block',
+        method: 'post',
+        data: {
+          id: id
+        },
+        success: (reponse) => {
+          if (reponse.success) {
+            location.reload()
+          }
+        }
+      })
+    }
+    function unblock(id) {
+      $.ajax({
+        url: '/admin/unblock',
+        method: 'post',
+        data: {
+          id: id
+        },
+        success: (reponse) => {
+          if (reponse.success) {
+            location.reload()
+          }
+        }
+      })
+    }
+    function deleteUser(id) {
+      $.ajax({
+        url: '/admin/deleteUser',
+        method: 'post',
+        data: {
+          id: id
+        },
+        success: (reponse) => {
+          if (reponse.success) {
+            location.reload()
+          }
+        }
+      })
+    }
+  </script>
+  <style>
+   
+  </style>
+  </div>
+  </div>
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  </body>
+
+  </html>
