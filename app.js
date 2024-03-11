@@ -14,11 +14,7 @@ const cluster = require('cluster')
 const numCpu = require('os').cpus().length;
 const app = express();
 
-if (cluster.isMaster) {
-  for (let i = 0;i <numCpu; i++) {
-    cluster.fork()
-  }
-}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
